@@ -1,0 +1,35 @@
+# Nome do compilador
+CXX = g++
+
+# Flags de compilação
+# -std=c++17: Usa o padrão C++17
+# -g: Adiciona informações de debug (útil para gdb)
+# -Wall -Wextra: Habilita a maioria dos avisos
+CXXFLAGS = -std=c++17 -g -Wall -Wextra
+
+# Nome do executável
+TARGET = lwhash_app
+
+# Arquivos fonte (.cpp)
+SRCS = main.cpp utils.cpp padding.cpp speck.cpp rectangle.cpp ctr_mode.cpp lwhash_core.cpp
+
+# Arquivos objeto (.o) - gerados automaticamente a partir dos SRCS
+OBJS = $(SRCS:.cpp=.o)
+
+# Regra padrão: compila o alvo principal
+all: $(TARGET)
+
+# Regra para linkar e criar o executável final
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
+
+# Regra para compilar arquivos .cpp em arquivos .o
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# Regra para limpar os arquivos gerados (objetos e executável)
+clean:
+	rm -f $(OBJS) $(TARGET)
+
+# Phony targets (alvos que não são nomes de arquivos)
+.PHONY: all clean
